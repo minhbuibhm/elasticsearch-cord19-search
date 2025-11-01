@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  # Backend API (FastAPI)
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: paper-finder-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
+      - JWT_SECRET=your-secret-key-change-in-production
+    networks:
+      - paper-finder-network
+    depends_on:
+      - elasticsearch
+    restart: unless-stopped
+
+  # Frontend (Vue.js + Nginx)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: paper-finder-frontend
+    ports:
+      - "8080:80"
+    environment:
+      - VITE_API_URL=http://localhost:8000
+    networks:
+      - paper-finder-network
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+  # Elasticsearch
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.11.0
+    container_name: paper-finder-elasticsearch
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+    networks:
+      - paper-finder-network
+    restart: unless-stopped
+
+networks:
+  paper-finder-network:
+    driver: bridge
+
+volumes:
+  elasticsearch-data:
+    driver: local

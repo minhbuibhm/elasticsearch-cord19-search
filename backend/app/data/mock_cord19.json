@@ -1,0 +1,102 @@
+[
+  {
+    "cord_uid": "doc_00001",
+    "title": "Efficacy and Safety of Hydroxychloroquine in COVID-19 Patients: A Randomized Controlled Trial",
+    "authors": ["Zhang, Wei", "Chen, Li", "Wang, Ming", "Liu, Xiao"],
+    "abstract": "Background: Hydroxychloroquine (HCQ) has been proposed as a potential treatment for COVID-19 due to its antiviral properties observed in vitro. However, clinical evidence remains limited. Methods: We conducted a multicenter, randomized, controlled trial involving 450 hospitalized COVID-19 patients. Patients were randomly assigned to receive either standard care plus hydroxychloroquine (400mg twice daily for 1 day, followed by 200mg twice daily for 4 days) or standard care alone. The primary outcome was viral clearance at day 7. Results: At day 7, viral clearance was achieved in 68% of the HCQ group versus 52% of the control group (p=0.003). However, adverse events including cardiac arrhythmias were more common in the HCQ group (15% vs 8%, p=0.02). Conclusion: While hydroxychloroquine showed modest antiviral activity, the increased risk of adverse events warrants careful patient selection and monitoring.",
+    "journal": "The Lancet Infectious Diseases",
+    "publish_time": "2021-03-15",
+    "doi": "10.1016/S1473-3099(21)00001-X",
+    "url": "https://example.com/paper1"
+  },
+  {
+    "cord_uid": "doc_00002",
+    "title": "mRNA Vaccine-Induced Immunity Against SARS-CoV-2 Variants: A Longitudinal Study",
+    "authors": ["Johnson, Sarah", "Martinez, Carlos", "Anderson, Emma"],
+    "abstract": "The emergence of SARS-CoV-2 variants has raised concerns about vaccine effectiveness. This longitudinal study followed 2,500 mRNA vaccine recipients over 12 months to assess antibody responses against wild-type and variant strains including Alpha, Beta, Gamma, Delta, and Omicron. Blood samples were collected at baseline, 3, 6, 9, and 12 months post-vaccination. Neutralizing antibody titers remained robust against wild-type and Alpha variants throughout the study period. However, significant reductions in neutralizing capacity were observed against Beta (3.2-fold), Delta (2.8-fold), and Omicron (8.5-fold) variants at 6 months. Booster vaccination at month 8 restored neutralizing activity across all variants, with titers exceeding initial post-vaccination levels by 2.5-fold on average. These findings support the need for periodic booster doses to maintain protection against emerging variants.",
+    "journal": "New England Journal of Medicine",
+    "publish_time": "2023-07-22",
+    "doi": "10.1056/NEJMoa2023456",
+    "url": "https://example.com/paper2"
+  },
+  {
+    "cord_uid": "doc_00003",
+    "title": "Long COVID Syndrome: Clinical Characteristics and Risk Factors in 5,000 Patients",
+    "authors": ["Thompson, Robert", "Davis, Jennifer", "White, Michael", "Brown, Lisa", "Wilson, David"],
+    "abstract": "Objective: To characterize the clinical spectrum of Long COVID syndrome and identify risk factors for its development. Design: Prospective cohort study. Setting: 25 hospitals across Europe and North America. Participants: 5,000 patients who recovered from acute COVID-19 infection, followed for 6 months. Main Outcome Measures: Persistent symptoms at 3 and 6 months post-infection. Results: At 6 months, 42% of patients reported persistent symptoms. The most common symptoms were fatigue (68%), dyspnea (45%), cognitive impairment (38%), and sleep disturbances (35%). Risk factors for Long COVID included female sex (OR 1.8, 95% CI 1.5-2.2), age over 50 (OR 1.6, 95% CI 1.3-1.9), hospitalization during acute infection (OR 2.4, 95% CI 1.9-3.0), and presence of five or more symptoms during acute illness (OR 3.2, 95% CI 2.5-4.1). Conclusions: Long COVID affects a substantial proportion of recovered patients, with distinct risk factors that can guide clinical management and follow-up strategies.",
+    "journal": "JAMA Network Open",
+    "publish_time": "2022-11-08",
+    "doi": "10.1001/jamanetworkopen.2022.45678",
+    "url": "https://example.com/paper3"
+  },
+  {
+    "cord_uid": "doc_00004",
+    "title": "Structural Analysis of SARS-CoV-2 Spike Protein Mutations and Their Impact on ACE2 Binding Affinity",
+    "authors": ["Kumar, Rajesh", "Patel, Anita", "Singh, Vikram"],
+    "abstract": "The SARS-CoV-2 spike protein mediates viral entry through binding to the human ACE2 receptor. Understanding how mutations in the spike protein affect this interaction is crucial for predicting viral evolution and designing therapeutics. Using X-ray crystallography and molecular dynamics simulations, we analyzed 15 naturally occurring spike protein mutations across the receptor-binding domain (RBD). Our structural analyses revealed that mutations N501Y, E484K, and K417N significantly alter the RBD-ACE2 interface. The N501Y mutation increased binding affinity by 2.5-fold through enhanced aromatic stacking interactions. E484K reduced neutralization by therapeutic antibodies while maintaining ACE2 binding. K417N showed context-dependent effects, with reduced binding affinity in isolation but compensatory effects when combined with N501Y. Molecular dynamics simulations over 500 nanoseconds confirmed these findings and revealed altered conformational dynamics in mutant RBDs. These results provide mechanistic insights into variant transmissibility and immune escape.",
+    "journal": "Nature Structural & Molecular Biology",
+    "publish_time": "2021-09-30",
+    "doi": "10.1038/s41594-021-00678-x",
+    "url": "https://example.com/paper4"
+  },
+  {
+    "cord_uid": "doc_00005",
+    "title": "Dexamethasone Treatment in Severe COVID-19: The RECOVERY Trial Results",
+    "authors": ["Horby, Peter", "Lim, Wei Shen", "Emberson, Jonathan", "Mafham, Marion"],
+    "abstract": "Background: Corticosteroids have been widely used for treating respiratory infections, but their role in COVID-19 remains unclear. Methods: The RECOVERY trial was a randomized, controlled, open-label trial conducted at 176 hospitals in the UK. Hospitalized COVID-19 patients were randomly allocated to receive either usual care alone or usual care plus oral or intravenous dexamethasone (6 mg once daily) for up to 10 days. The primary outcome was 28-day mortality. Results: A total of 6,425 patients were randomized, with 2,104 assigned to receive dexamethasone and 4,321 to receive usual care. Dexamethasone reduced deaths by one-third in patients receiving invasive mechanical ventilation (29.3% vs 41.4%; rate ratio 0.64, 95% CI 0.51-0.81), and by one-fifth in patients receiving oxygen without invasive mechanical ventilation (23.3% vs 26.2%; 0.82, 0.72-0.94). There was no benefit among patients not receiving respiratory support (17.8% vs 14.0%; 1.19, 0.91-1.55). Conclusion: In patients hospitalized with COVID-19, dexamethasone reduced 28-day mortality among those receiving respiratory support but not among those not receiving respiratory support.",
+    "journal": "New England Journal of Medicine",
+    "publish_time": "2021-02-25",
+    "doi": "10.1056/NEJMoa2021436",
+    "url": "https://example.com/paper5"
+  },
+  {
+    "cord_uid": "doc_00006",
+    "title": "Indoor Air Quality and SARS-CoV-2 Transmission: Ventilation Strategies for Risk Reduction",
+    "authors": ["Miller, Susan", "Chen, James", "Rodriguez, Maria"],
+    "abstract": "The COVID-19 pandemic has highlighted the critical role of indoor air quality in disease transmission. This review examines the airborne transmission of SARS-CoV-2 and evaluates ventilation strategies for risk mitigation. Aerosol physics studies demonstrate that virus-laden particles can remain suspended in indoor air for hours, with transmission risk proportional to exposure duration and viral concentration. We analyzed ventilation interventions including: (1) increased outdoor air exchange rates, (2) HEPA filtration, (3) upper-room UV germicidal irradiation, and (4) portable air cleaners. Computational fluid dynamics modeling showed that increasing air exchange rates from 2 to 6 air changes per hour reduced aerosol concentrations by 65%. HEPA filtration systems achieved 99.97% particle removal efficiency for particles ≥0.3 μm. Upper-room UVGI reduced airborne viral loads by 80-90% in occupied spaces. Economic analysis revealed that ventilation upgrades provide cost-effective risk reduction compared to repeated testing strategies. Implementation guidelines for schools, offices, and healthcare settings are provided. These findings support multi-layered approaches combining ventilation improvements with other preventive measures.",
+    "journal": "Environmental Science & Technology",
+    "publish_time": "2022-05-18",
+    "doi": "10.1021/acs.est.2c01234",
+    "url": "https://example.com/paper6"
+  },
+  {
+    "cord_uid": "doc_00007",
+    "title": "Pediatric Inflammatory Multisystem Syndrome Temporally Associated with SARS-CoV-2 (PIMS-TS): Clinical Features and Outcomes",
+    "authors": ["Patel, Neha", "Williams, Thomas", "Lee, Jessica", "Garcia, Antonio"],
+    "abstract": "Objective: To describe the clinical characteristics, management, and outcomes of children with Pediatric Inflammatory Multisystem Syndrome (PIMS-TS, also known as MIS-C) following SARS-CoV-2 infection. Methods: Multicenter observational cohort study across 52 pediatric centers in 8 countries. Children meeting WHO criteria for PIMS-TS between March 2020 and December 2021 were included. Results: 850 children (median age 8.9 years, range 0.3-17.8) were enrolled. Common presenting features included persistent fever (100%), gastrointestinal symptoms (85%), rash (72%), conjunctivitis (68%), and cardiovascular dysfunction (62%). Laboratory findings showed elevated inflammatory markers: median CRP 180 mg/L, ferritin 820 ng/mL, and D-dimer 3.2 mg/L. Cardiac involvement included decreased ejection fraction in 48%, coronary artery abnormalities in 22%, and shock requiring inotropic support in 55%. Treatment consisted of intravenous immunoglobulin (94% of patients), corticosteroids (78%), and immunomodulators such as anakinra or infliximab (12%). Overall mortality was 1.8%. At 6-month follow-up, cardiac function normalized in 95% of survivors, though 8% had persistent coronary abnormalities. Conclusions: PIMS-TS represents a severe post-infectious complication of COVID-19 in children, requiring prompt recognition and aggressive immunomodulatory therapy. Long-term cardiac surveillance is essential.",
+    "journal": "The Lancet Child & Adolescent Health",
+    "publish_time": "2022-04-12",
+    "doi": "10.1016/S2352-4642(22)00098-X",
+    "url": "https://example.com/paper7"
+  },
+  {
+    "cord_uid": "doc_00008",
+    "title": "Neutralizing Monoclonal Antibodies for COVID-19 Treatment: A Systematic Review and Meta-Analysis",
+    "authors": ["Anderson, Kyle", "Taylor, Rachel", "Moore, Brandon"],
+    "abstract": "Purpose: To evaluate the efficacy and safety of neutralizing monoclonal antibodies (mAbs) for treating COVID-19. Data Sources: We searched MEDLINE, Embase, Web of Science, and preprint servers through June 2023. Study Selection: Randomized controlled trials comparing monoclonal antibodies (bamlanivimab, casirivimab/imdevimab, sotrovimab, bebtelovimab, or combinations) against placebo or standard care in COVID-19 patients. Data Extraction: Two independent reviewers extracted data on hospitalization, mortality, viral load, and adverse events. Results: 23 trials with 15,847 participants were included. In outpatients with mild-to-moderate COVID-19, mAb treatment reduced hospitalization risk by 71% (RR 0.29, 95% CI 0.23-0.37) and all-cause mortality by 69% (RR 0.31, 95% CI 0.18-0.52). Treatment within 5 days of symptom onset was most effective. Among hospitalized patients not requiring oxygen, mAbs reduced progression to severe disease by 46% (RR 0.54, 95% CI 0.42-0.69). However, no mortality benefit was observed in hospitalized patients receiving supplemental oxygen. Viral load reductions of 0.8-1.2 log10 copies/mL were observed at day 7. Serious adverse events were rare and comparable between groups. Variant susceptibility analysis revealed reduced efficacy against Omicron subvariants for several mAbs. Conclusions: Monoclonal antibodies effectively reduce hospitalization and mortality when administered early in high-risk outpatients, though variant evolution necessitates ongoing surveillance and antibody development.",
+    "journal": "Clinical Infectious Diseases",
+    "publish_time": "2023-09-05",
+    "doi": "10.1093/cid/ciad456",
+    "url": "https://example.com/paper8"
+  },
+  {
+    "cord_uid": "doc_00009",
+    "title": "Psychological Impact of COVID-19 Lockdown Measures: A Global Mental Health Survey",
+    "authors": ["Zhang, Yue", "O'Connor, Patrick", "Schmidt, Anna", "Nakamura, Hiroshi"],
+    "abstract": "Background: Lockdown measures implemented to control COVID-19 transmission have raised concerns about mental health impacts. This global survey assessed psychological outcomes associated with lockdown restrictions. Methods: Cross-sectional online survey conducted in 42 countries between April-August 2020. Adults aged 18+ (N=52,418) completed validated instruments assessing depression (PHQ-9), anxiety (GAD-7), stress (PSS-10), and loneliness (UCLA Loneliness Scale). Results: Overall prevalence of clinically significant symptoms was: depression 31.6%, anxiety 26.9%, stress 38.2%, and loneliness 43.8%. Women reported higher rates across all outcomes compared to men (p<0.001). Age was inversely associated with mental health symptoms, with highest rates in 18-29 year-olds. Risk factors included living alone (OR 2.1, 95% CI 1.9-2.3), pre-existing mental health conditions (OR 3.8, 95% CI 3.5-4.2), job loss (OR 2.6, 95% CI 2.3-2.9), and longer lockdown duration (OR 1.4 per month, 95% CI 1.3-1.5). Protective factors included social support, outdoor space access, and engaging in physical activity. Regional variations correlated with lockdown stringency, economic impact, and healthcare system capacity. Conclusions: The COVID-19 pandemic and associated lockdown measures have substantial mental health impacts, particularly among vulnerable populations. These findings underscore the need for accessible mental health services and targeted interventions during public health emergencies.",
+    "journal": "Psychological Medicine",
+    "publish_time": "2021-06-30",
+    "doi": "10.1017/S0033291721001234",
+    "url": "https://example.com/paper9"
+  },
+  {
+    "cord_uid": "doc_00010",
+    "title": "Nasal Spray Vaccines Against SARS-CoV-2: Preclinical Development and Mucosal Immunity",
+    "authors": ["Hassan, Ahmed", "Liu, Feng", "Moreno, Sofia"],
+    "abstract": "Introduction: Current COVID-19 vaccines require intramuscular injection and primarily induce systemic immunity. Intranasal vaccines could provide mucosal immunity at the site of viral entry, potentially offering superior protection against infection and transmission. Methods: We developed a live-attenuated intranasal vaccine candidate using a replication-competent SARS-CoV-2 strain with deletions in the nsp16 gene. Syrian hamsters (n=60) and rhesus macaques (n=24) received two intranasal doses 28 days apart. Control groups received intramuscular mRNA vaccine or PBS. Animals were challenged with wild-type SARS-CoV-2 at day 56. Results: Intranasal vaccination induced robust mucosal IgA responses in nasal wash (geometric mean titer 3,840) and bronchoalveolar lavage (GMT 5,120), which were absent in intramuscular vaccine recipients. Serum neutralizing antibody titers were comparable between intranasal and intramuscular groups (GMT 1,280 vs 1,560, p=0.23). Following challenge, intranasal vaccine recipients showed 10,000-fold reduction in nasal viral loads compared to PBS controls, and 100-fold reduction compared to intramuscular vaccine recipients (p<0.001). Lung viral loads were below detection limits in both vaccine groups. No virus was recovered from contact-exposed sentinels housed with intranasal vaccine recipients, demonstrating prevention of transmission. Tissue-resident memory T cells (CD69+CD103+) were significantly higher in respiratory tissues of intranasal vaccine recipients. Safety assessments revealed no adverse neurological or respiratory findings. Conclusions: Intranasal vaccination elicits superior mucosal immunity and prevents upper respiratory tract infection and transmission, supporting clinical development of this approach.",
+    "journal": "Science Translational Medicine",
+    "publish_time": "2023-02-14",
+    "doi": "10.1126/scitranslmed.abcd1234",
+    "url": "https://example.com/paper10"
+  }
+]
