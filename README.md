@@ -15,6 +15,17 @@ An AI-powered search engine for scientific literature, built with Elasticsearch.
 we will use sample data (in datasets folder)
 We will index data in 3 ways, so we can search papers in 3 ways, run:
 ```python
+# set these option to index in three way
+# Index for keyword search
+    # use_embedding = False
+    # use_n_gram_tokenizer = False
+# Index for n-gram search
+    # use_embedding = False
+    # use_n_gram_tokenizer = True
+# Index for semantic search
+    # use_embedding = True
+    # use_n_gram_tokenizer = False
+
 python index_data.py
 ```
 3. Run fronend
