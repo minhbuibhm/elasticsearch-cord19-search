@@ -1,0 +1,5 @@
+INDEX_NAME_DEFAULT = "cord19"  # "apod"
+INDEX_NAME_N_GRAM =  "cord19_n_gram" # "apod_n_gram"
+INDEX_NAME_EMBEDDING = "cord19_embedding" # "apod_embedding"
+# INDEX_NAME_RAW = "apod_raw"
+EMBEDDING_MODEL = "all-MiniLM-L6-v2"

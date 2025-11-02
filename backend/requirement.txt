@@ -1,0 +1,12 @@
+elasticsearch==8.15.1
+fastapi==0.115.5
+fastapi-cli==0.0.5
+httptools==0.7.1
+pipdeptree==2.29.0
+python-dotenv==1.2.1
+ranx==0.3.21
+torch==2.9.0
+uvloop==0.22.1
+watchfiles==1.1.1
+websockets==15.0.1
+wheel==0.45.1
