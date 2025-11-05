@@ -150,8 +150,9 @@ const performSearch = async (page = 1) => {
   try {
     const response = await search({
       query: searchQuery.value,
-      only_covid_papers: route.query.covid === '1',
-      advanced_filters: advancedFilters.value,
+      year: advancedFilters.value.year || null,
+      tokenizer: advancedFilters.value.tokenizer || 'Standard',
+      search_method: advancedFilters.value.search_method || 'regular',
       pagination: {
         page,
         size: 10
@@ -168,13 +169,12 @@ const performSearch = async (page = 1) => {
   }
 }
 
-const handleSearch = ({ query, onlyCovidPapers }) => {
+const handleSearch = ({ query }) => {
   searchQuery.value = query
   router.push({
     name: 'results',
     query: {
-      q: query,
-      covid: onlyCovidPapers ? '1' : '0'
+      q: query
     }
   })
   performSearch(1)

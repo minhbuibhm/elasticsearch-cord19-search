@@ -20,108 +20,47 @@
     <!-- Filters Panel -->
     <transition name="slide">
       <div v-if="isExpanded" class="bg-white rounded-xl shadow-md p-6 space-y-4">
-        <!-- Time Range -->
+        <!-- Search Method and Tokenizer -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">
-              Publication Date
+              Search Method
             </label>
-            <select
-              v-model="filters.time_range.type"
-              class="input-field"
-              @change="handleTimeTypeChange"
-            >
-              <option value="any">Any time</option>
-              <option value="since">Since year</option>
-              <option value="range">Custom range</option>
+            <select v-model="filters.search_method" class="input-field">
+              <option value="regular">Regular Search</option>
+              <option value="semantic">Semantic Search (AI-powered)</option>
             </select>
           </div>
 
-          <!-- Since Year -->
-          <div v-if="filters.time_range.type === 'since'">
+          <!-- Tokenizer (only for regular search) -->
+          <div v-if="filters.search_method === 'regular'">
             <label class="block text-sm font-medium text-gray-700 mb-2">
-              Since
+              Tokenizer
             </label>
-            <select v-model="filters.time_range.value" class="input-field">
-              <option value="2025">Since 2025</option>
-              <option value="2024">Since 2024</option>
-              <option value="2021">Since 2021</option>
-              <option value="2020">Since 2020</option>
+            <select v-model="filters.tokenizer" class="input-field">
+              <option value="Standard">Standard</option>
+              <option value="N-Gram">N-Gram (partial matching)</option>
             </select>
           </div>
         </div>
 
-        <!-- Custom Date Range -->
-        <div v-if="filters.time_range.type === 'range'" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">
-              From
-            </label>
-            <input
-              v-model="filters.time_range.start"
-              type="date"
-              class="input-field"
-            />
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">
-              To
-            </label>
-            <input
-              v-model="filters.time_range.end"
-              type="date"
-              class="input-field"
-            />
-          </div>
-        </div>
-
-        <!-- Sort By and Article Type -->
+        <!-- Year Filter -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">
-              Sort by
+              Publication Year
             </label>
-            <select v-model="filters.sort_by" class="input-field">
-              <option value="relevance">Relevance</option>
-              <option value="date">Date (newest first)</option>
+            <select v-model="filters.year" class="input-field">
+              <option :value="null">Any year</option>
+              <option value="2025">2025</option>
+              <option value="2024">2024</option>
+              <option value="2023">2023</option>
+              <option value="2022">2022</option>
+              <option value="2021">2021</option>
+              <option value="2020">2020</option>
+              <option value="2019">2019</option>
+              <option value="2018">2018</option>
             </select>
-          </div>
-
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">
-              Article Type
-            </label>
-            <select v-model="filters.article_type" class="input-field">
-              <option value="any">Any type</option>
-              <option value="review">Review articles</option>
-            </select>
-          </div>
-        </div>
-
-        <!-- Checkboxes -->
-        <div class="flex flex-wrap gap-4">
-          <div class="flex items-center">
-            <input
-              v-model="filters.include_patents"
-              type="checkbox"
-              id="include-patents"
-              class="w-4 h-4 text-primary-600 bg-gray-100 border-gray-300 rounded focus:ring-primary-500"
-            />
-            <label for="include-patents" class="ml-2 text-sm text-gray-700 cursor-pointer">
-              Include patents
-            </label>
-          </div>
-
-          <div class="flex items-center">
-            <input
-              v-model="filters.include_citations"
-              type="checkbox"
-              id="include-citations"
-              class="w-4 h-4 text-primary-600 bg-gray-100 border-gray-300 rounded focus:ring-primary-500"
-            />
-            <label for="include-citations" class="ml-2 text-sm text-gray-700 cursor-pointer">
-              Include citations
-            </label>
           </div>
         </div>
 
@@ -147,31 +86,10 @@ const emit = defineEmits(['update'])
 const isExpanded = ref(false)
 
 const filters = reactive({
-  time_range: {
-    type: 'any',
-    value: null,
-    start: null,
-    end: null
-  },
-  sort_by: 'relevance',
-  article_type: 'any',
-  include_patents: false,
-  include_citations: true
+  search_method: 'regular',
+  tokenizer: 'Standard',
+  year: null
 })
-
-const handleTimeTypeChange = () => {
-  if (filters.time_range.type === 'any') {
-    filters.time_range.value = null
-    filters.time_range.start = null
-    filters.time_range.end = null
-  } else if (filters.time_range.type === 'since') {
-    filters.time_range.value = '2024'
-    filters.time_range.start = null
-    filters.time_range.end = null
-  } else if (filters.time_range.type === 'range') {
-    filters.time_range.value = null
-  }
-}
 
 const applyFilters = () => {
   emit('update', { ...filters })

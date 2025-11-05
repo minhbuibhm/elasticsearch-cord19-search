@@ -53,13 +53,12 @@ const router = useRouter()
 const searchQuery = ref('')
 const advancedFilters = ref({})
 
-const handleSearch = ({ query, onlyCovidPapers }) => {
+const handleSearch = ({ query }) => {
   if (query.trim()) {
     router.push({
       name: 'results',
       query: {
-        q: query,
-        covid: onlyCovidPapers ? '1' : '0'
+        q: query
       }
     })
   }

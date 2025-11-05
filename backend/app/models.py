@@ -17,23 +17,11 @@ class TokenData(BaseModel):
     username: str
 
 # ============ Search Models ============
-class TimeRange(BaseModel):
-    type: Literal["any", "since", "range"] = "any"
-    value: Optional[str] = None  # "2024" or None
-    start: Optional[str] = None  # "2022-01-01"
-    end: Optional[str] = None    # "2022-12-31"
-
-class AdvancedFilters(BaseModel):
-    time_range: TimeRange = TimeRange(type="any")
-    sort_by: Literal["relevance", "date"] = "relevance"
-    article_type: Literal["any", "review"] = "any"
-    include_patents: bool = False
-    include_citations: bool = True
-
 class SearchRequest(BaseModel):
     query: str = Field(..., min_length=1)
-    only_covid_papers: bool = False  # Legacy field, kept for backwards compatibility
-    advanced_filters: AdvancedFilters = AdvancedFilters()
+    year: Optional[str] = None  # Filter by publication year (e.g., "2020")
+    tokenizer: Literal["Standard", "N-Gram"] = "Standard"
+    search_method: Literal["regular", "semantic"] = "regular"
     pagination: dict = {"page": 1, "size": 10}
 
 class ArticleSnippet(BaseModel):

@@ -18,19 +18,6 @@
       />
     </div>
 
-    <!-- Filter Options -->
-    <div class="mt-4 flex items-center space-x-2">
-      <input
-        v-model="onlyCovidPapers"
-        type="checkbox"
-        id="covid-only"
-        class="w-4 h-4 text-primary-600 bg-gray-100 border-gray-300 rounded focus:ring-primary-500"
-      />
-      <label for="covid-only" class="text-sm text-gray-700 cursor-pointer">
-        Filter by specific criteria
-      </label>
-    </div>
-
     <!-- Search Button -->
     <div class="mt-6 flex justify-center">
       <button
@@ -64,7 +51,6 @@ const props = defineProps({
 const emit = defineEmits(['search', 'update:query'])
 
 const localQuery = ref(props.query)
-const onlyCovidPapers = ref(false)
 
 watch(() => props.query, (newVal) => {
   localQuery.value = newVal
@@ -77,8 +63,7 @@ watch(localQuery, (newVal) => {
 const handleSearch = () => {
   if (localQuery.value.trim()) {
     emit('search', {
-      query: localQuery.value.trim(),
-      onlyCovidPapers: onlyCovidPapers.value
+      query: localQuery.value.trim()
     })
   }
 }
