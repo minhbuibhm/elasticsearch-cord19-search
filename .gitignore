@@ -208,3 +208,4 @@ __marimo__/
 
 datasets/CORD-19-research-challenge
 datasets/CORD-19-research-challenge.zip
+.DS_Store
