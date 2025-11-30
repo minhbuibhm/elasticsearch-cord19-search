@@ -5,9 +5,10 @@
   >
     <div class="flex items-start justify-between mb-3">
       <!-- Similarity Score Badge -->
-      <div class="badge-score">
+      <div v-if="article.similarity_score != null" class="badge-score">
         {{ article.similarity_score.toFixed(2) }}
       </div>
+      <div v-else class="h-6"></div> <!-- Spacer when no score -->
 
       <!-- Action Icons -->
       <div class="flex items-center space-x-2">
