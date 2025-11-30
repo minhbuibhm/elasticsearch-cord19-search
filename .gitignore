@@ -64,3 +64,4 @@ docker/elasticsearch/data/
 .claude
 .venv
 .git
+backend/datasets/data
