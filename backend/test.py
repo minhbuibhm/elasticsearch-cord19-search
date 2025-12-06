@@ -24,7 +24,7 @@ def print_separator(title):
     print(f" {title.upper()}")
     print("=" * 60)
 
-def test_endpoint(endpoint: str, query: str, year: str = None):
+def test_endpoint(endpoint: str, query: str, year: str|None= None):
     """Generic helper to test any search endpoint"""
     print(f"\n>>> Testing {endpoint} with query='{query}'" + (f" & year='{year}'" if year else ""))
     
@@ -100,6 +100,7 @@ def test_paper_details(doc_id: str):
 
     print("✅ SUCCESS")
     print(f"   Title: {details.get('title')[:60]}...")
+    print(f"   References: {details.get('references')[:2]}")
     print(f"   Related Papers Found: {len(related)}")
     
     if related:
@@ -113,7 +114,9 @@ def run_all_tests():
     # TEST 1: Regular BM25 Search
     print_separator("1. Lexical Search (BM25)")
     # Capture an ID to test details later
-    sample_doc_id = test_endpoint("/api/v1/regular_search/", query="corona")
+    # sample_doc_id = test_endpoint("/api/v1/regular_search/", query="covid")
+    sample_doc_id = "tCxN9JoBINyvOwxa3D92"
+    
 
     # TEST 2: Semantic Vector Search
     print_separator("2. Semantic Search (SciBERT)")

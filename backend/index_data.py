@@ -1,9 +1,16 @@
 """
+STEP 2: INDEXING
 SCRIPT ANNOTATION & DOCUMENTATION
 --------------------------------
 Purpose: 
     This script is the "Data Engineering" pipeline. It takes raw JSON data (CORD-19 dataset),
     processes it into text chunks and vectors, and indexes it into Elasticsearch.
+
+    Data Engineering pipeline.
+    1. Reads metadata to get basic info (Title, Abstract, ...).
+    2. Reads detailed PDF_JSON files to get References/Bibliography.
+    3. Generates Embeddings (SciBERT).
+    4. Indexes everything into Elasticsearch.
 
 Structure:
     1. Configuration: Sets up index names and model constants.
@@ -37,6 +44,10 @@ INDEX_NAME = "cord19_hybrid_search"
 # It understands terms like "COVID-19", "nucleotide", etc. better than standard BERT.
 EMBEDDING_MODEL = "allenai/scibert_scivocab_uncased"
 VECTOR_DIMS = 768  # SciBERT outputs a vector with 768 dimensions.
+
+# Point this to the folder containing 'document_parses' and 'metadata.csv/json'
+# We will use this to resolve relative paths found in the metadata.
+INPUT_FILE = "../datasets/ready_for_indexing.json" # Output from Step 1
 
 # Local imports utility
 try:
@@ -93,7 +104,11 @@ def create_index(es: Elasticsearch) -> None:
                     "type": "date", 
                     "format": "yyyy-MM-dd||yyyy" # Supports strict dates or just years
                 },
-
+                # We just store this field, we don't index its contents for search
+                "references": {
+                    "type": "object",
+                    "enabled": False 
+                },
                 # --- Semantic Search Field (Vector) ---
                 "embedding": {
                     "type": "dense_vector",
@@ -110,7 +125,7 @@ def create_index(es: Elasticsearch) -> None:
     }
 
     es.indices.create(index=INDEX_NAME, body=mapping)
-    print(f"Created new index '{INDEX_NAME}' with Hybrid mapping.")
+    print(f"Created new index '{INDEX_NAME}' with Hybrid mapping use for keyword, semantic and hybrid search.")
 
 # ---------------------------------------------------------
 # 2. DATA PROCESSING GENERATOR
@@ -150,6 +165,7 @@ def generate_actions(documents: List[dict], model: SentenceTransformer) -> Gener
                 "url": doc.get("url"),
                 "journal": doc.get("journal"),
                 "authors": doc.get("authors"),
+                "references": doc.get("references"), # store references
                 "embedding": vector  # This is the vector field
             }
         }
@@ -192,11 +208,9 @@ def index_data(file_path: str):
     print(f"Data is ready in index: '{INDEX_NAME}'")
 
 if __name__ == "__main__":
-    # Path to your dataset
-    DATA_FILE = "../datasets/metadata_sample.json" 
-    
+    # Path to your dataset    
     # Trigger the pipeline
-    index_data(DATA_FILE)
+    index_data(INPUT_FILE)
     
     
 # import json
