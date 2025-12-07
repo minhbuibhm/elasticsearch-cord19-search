@@ -61,7 +61,7 @@
           v-for="article in results"
           :key="article.id"
           :article="article"
-          @click="openArticleModal(article.id)"
+          @click="navigateToArticle(article.id)"
         />
 
         <!-- Pagination -->
@@ -100,12 +100,6 @@
       </div>
     </div>
 
-    <!-- Article Detail Modal -->
-    <ArticleModal
-      :article-id="selectedArticleId"
-      :is-open="isModalOpen"
-      @close="closeArticleModal"
-    />
   </div>
 </template>
 
@@ -115,7 +109,6 @@ import { useRoute, useRouter } from 'vue-router'
 import SearchBar from '@/components/SearchBar.vue'
 import AdvancedFilters from '@/components/AdvancedFilters.vue'
 import ResultCard from '@/components/ResultCard.vue'
-import ArticleModal from '@/components/ArticleModal.vue'
 import { useSearchApi } from '@/composables/useApi'
 
 const route = useRoute()
@@ -133,8 +126,6 @@ const pagination = ref({
 })
 const loading = ref(false)
 const error = ref(null)
-const selectedArticleId = ref(null)
-const isModalOpen = ref(false)
 
 onMounted(() => {
   searchQuery.value = route.query.q || ''
@@ -222,13 +213,7 @@ const visiblePages = computed(() => {
   return pages
 })
 
-const openArticleModal = (articleId) => {
-  selectedArticleId.value = articleId
-  isModalOpen.value = true
-}
-
-const closeArticleModal = () => {
-  isModalOpen.value = false
-  selectedArticleId.value = null
+const navigateToArticle = (articleId) => {
+  router.push({ name: 'article', params: { id: articleId } })
 }
 </script>

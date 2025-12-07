@@ -29,6 +29,7 @@
             <select v-model="filters.search_method" class="input-field">
               <option value="regular">Regular Search</option>
               <option value="semantic">Semantic Search (AI-powered)</option>
+              <option value="hybrid">Hybrid Search (Keyword + AI)</option>
             </select>
           </div>
 

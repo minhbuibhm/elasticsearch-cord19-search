@@ -21,7 +21,7 @@ class SearchRequest(BaseModel):
     query: str = Field(..., min_length=1)
     year: Optional[str] = None  # Filter by publication year (e.g., "2020")
     tokenizer: Literal["Standard", "N-Gram"] = "Standard"
-    search_method: Literal["regular", "semantic"] = "regular"
+    search_method: Literal["regular", "semantic", "hybrid"] = "regular"
     pagination: dict = {"page": 1, "size": 10}
 
 class ArticleSnippet(BaseModel):
@@ -38,6 +38,17 @@ class SearchResponse(BaseModel):
     results: List[ArticleSnippet]
 
 # ============ Article Models ============
+class Reference(BaseModel):
+    ref_id: Optional[str] = None
+    title: Optional[str] = None
+    year: Optional[int] = None
+    venue: Optional[str] = None
+    authors: Optional[str] = None
+    volume: Optional[str] = None
+    pages: Optional[str] = None
+    doi: Optional[str] = None
+
+
 class ArticleDetail(BaseModel):
     id: str
     title: str
@@ -48,6 +59,7 @@ class ArticleDetail(BaseModel):
     full_text_url: Optional[str] = None
     clinical_trials: List[str] = []
     doi: Optional[str] = None
+    references: List[Reference] = []
 
 class RelatedArticle(BaseModel):
     id: str

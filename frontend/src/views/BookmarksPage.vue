@@ -76,7 +76,7 @@
               :key="article.id"
               :article="article"
               :bookmarked="true"
-              @click="openArticleModal(article.id)"
+              @click="navigateToArticle(article.id)"
               @bookmark-toggle="loadBookmarks"
             />
           </div>
@@ -129,7 +129,7 @@
                 v-for="rec in recommendations"
                 :key="rec.id"
                 class="card p-6 cursor-pointer hover:border-2 hover:border-secondary-200"
-                @click="openArticleModal(rec.id)"
+                @click="navigateToArticle(rec.id)"
               >
                 <div class="flex items-start justify-between mb-3">
                   <div class="badge-score bg-gradient-to-r from-secondary-500 to-primary-500">
@@ -162,21 +162,16 @@
       </div>
     </div>
 
-    <!-- Article Detail Modal -->
-    <ArticleModal
-      :article-id="selectedArticleId"
-      :is-open="isModalOpen"
-      @close="closeArticleModal"
-    />
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import ResultCard from '@/components/ResultCard.vue'
-import ArticleModal from '@/components/ArticleModal.vue'
 import { useBookmarkApi, useRecommendationApi } from '@/composables/useApi'
 
+const router = useRouter()
 const { getBookmarks } = useBookmarkApi()
 const { getRecommendations } = useRecommendationApi()
 
@@ -189,9 +184,6 @@ const loadingBookmarks = ref(false)
 const loadingRecommendations = ref(false)
 const bookmarksError = ref(null)
 const recommendationsError = ref(null)
-
-const selectedArticleId = ref(null)
-const isModalOpen = ref(false)
 
 onMounted(() => {
   loadBookmarks()
@@ -229,14 +221,8 @@ const loadRecommendations = async () => {
   }
 }
 
-const openArticleModal = (articleId) => {
-  selectedArticleId.value = articleId
-  isModalOpen.value = true
-}
-
-const closeArticleModal = () => {
-  isModalOpen.value = false
-  selectedArticleId.value = null
+const navigateToArticle = (articleId) => {
+  router.push({ name: 'article', params: { id: articleId } })
 }
 
 const formatAuthors = (authors) => {

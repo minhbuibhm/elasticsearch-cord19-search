@@ -6,8 +6,8 @@ from app.models import RecommendedArticle, RecommendationsResponse
 from app.auth.auth import verify_token, TokenData
 from app.api.bookmarks import bookmarks_store
 from app.utils import get_es_client
-from app.elasticsearch_helpers import get_documents_by_cord_uids, get_recent_documents
-from app.config import INDEX_NAME_DEFAULT, INDEX_NAME_EMBEDDING
+from app.elasticsearch_helpers import get_recent_documents, get_es_ids_by_cord_uids
+from app.config import INDEX_NAME_DEFAULT, INDEX_NAME_EMBEDDING, INDEX_NAME_HYBRID
 
 router = APIRouter()
 
@@ -39,68 +39,70 @@ def generate_recommendation_reason(similarity: float) -> str:
 
 def get_recommendations_mlt(
     es_client,
-    bookmarked_docs: List[Dict],
+    bookmarked_cord_uids: List[str],
     bookmarked_ids: set,
     limit: int
 ) -> List[Dict]:
     """
-    Get recommendations using More Like This query
-    
+    Get recommendations using More Like This query with document references
+
     Args:
         es_client: Elasticsearch client
-        bookmarked_docs: List of bookmarked document dicts
+        bookmarked_cord_uids: List of bookmarked cord_uids
         bookmarked_ids: Set of bookmarked cord_uids to exclude
         limit: Maximum number of recommendations
-    
+
     Returns:
         List of recommended documents with scores
     """
-    # Combine text from all bookmarked papers
-    combined_text_parts = []
-    for doc in bookmarked_docs:
-        title = doc.get('title', '')
-        abstract = doc.get('abstract', '')
-        combined_text_parts.append(f"{title} {abstract}")
-    
-    combined_text = " ".join(combined_text_parts)
-    
-    # Run More Like This query
     try:
+        # Get ES _ids for bookmarked documents from hybrid index
+        cord_to_es_id = get_es_ids_by_cord_uids(es_client, bookmarked_cord_uids, INDEX_NAME_HYBRID)
+
+        if not cord_to_es_id:
+            return []
+
+        # Build document references for MLT query
+        like_docs = [
+            {"_index": INDEX_NAME_HYBRID, "_id": es_id}
+            for es_id in cord_to_es_id.values()
+        ]
+
+        # Run More Like This query with document references
         response = es_client.search(
-            index=INDEX_NAME_DEFAULT,
-            body={
-                "query": {
-                    "more_like_this": {
-                        "fields": ["title", "abstract"],
-                        "like": combined_text,
-                        "min_term_freq": 1,
-                        "min_doc_freq": 1,
-                        "max_query_terms": 30,
-                        "minimum_should_match": "30%"
-                    }
-                },
-                "size": limit + len(bookmarked_ids)  # Extra to account for filtering
-            }
+            index=INDEX_NAME_HYBRID,
+            query={
+                "more_like_this": {
+                    "fields": ["title", "abstract"],
+                    "like": like_docs,
+                    "min_term_freq": 1,
+                    "min_doc_freq": 1,
+                    "max_query_terms": 30,
+                    "minimum_should_match": "30%"
+                }
+            },
+            size=limit + len(bookmarked_ids),  # Extra to account for filtering
+            _source={"excludes": ["embedding"]}
         )
-        
+
         hits = response.get("hits", {}).get("hits", [])
-        
+
         # Filter and collect results
         results = []
         for hit in hits:
-            doc = hit["_source"]
+            doc = hit["_source"].copy()
             cord_uid = doc.get("cord_uid")
-            
+
             # Skip bookmarked papers
             if cord_uid in bookmarked_ids:
                 continue
-            
+
             doc["_similarity_score"] = hit.get("_score", 0)
             results.append(doc)
-            
+
             if len(results) >= limit:
                 break
-        
+
         return results
     except Exception as e:
         print(f"Error in MLT recommendations: {e}")
@@ -251,9 +253,8 @@ async def get_recommendations(
                 based_on_bookmarks=0
             )
 
-        # Get bookmarked documents
+        # Get bookmarked cord_uids
         bookmarked_cord_uids = list(bookmarked_ids)
-        bookmarked_docs = get_documents_by_cord_uids(es, bookmarked_cord_uids, INDEX_NAME_DEFAULT)
 
         # Get recommendations based on selected method
         if method == RecommendationMethod.VECTOR:
@@ -262,7 +263,7 @@ async def get_recommendations(
             )
         else:  # MLT is default
             recommended_docs = get_recommendations_mlt(
-                es, bookmarked_docs, bookmarked_ids, limit
+                es, bookmarked_cord_uids, bookmarked_ids, limit
             )
 
         # Format recommendations

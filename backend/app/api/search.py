@@ -1,10 +1,10 @@
 from fastapi import APIRouter, HTTPException
-from typing import List
+from typing import List, Dict, Optional
 import torch
 from sentence_transformers import SentenceTransformer
 
 from app.models import SearchRequest, SearchResponse, ArticleSnippet
-from app.config import INDEX_NAME_DEFAULT, INDEX_NAME_N_GRAM, INDEX_NAME_EMBEDDING, EMBEDDING_MODEL
+from app.config import INDEX_NAME_DEFAULT, INDEX_NAME_N_GRAM, INDEX_NAME_EMBEDDING, INDEX_NAME_HYBRID, EMBEDDING_MODEL
 from app.utils import get_es_client
 
 router = APIRouter()
@@ -30,6 +30,49 @@ def get_total_hits(response) -> int:
 def calculate_max_pages(total_hits: int, limit: int) -> int:
     """Calculate maximum number of pages"""
     return (total_hits + limit - 1) // limit
+
+
+def build_year_filter(year: Optional[str]) -> Optional[Dict]:
+    """Creates the Elasticsearch range filter for years."""
+    if not year:
+        return None
+    return {
+        "range": {
+            "publish_time": {
+                "gte": f"{year}-01-01",
+                "lte": f"{year}-12-31",
+                "format": "yyyy-MM-dd||yyyy",
+            }
+        }
+    }
+
+
+def reciprocal_rank_fusion(
+    lexical_hits: List[Dict], semantic_hits: List[Dict], k: int = 60
+) -> List[Dict]:
+    """
+    Implements Reciprocal Rank Fusion (RRF).
+    Formula: Score = sum(1 / (k + rank_i))
+    """
+    doc_scores = {}
+
+    # Process Lexical (Keyword) Results
+    for rank, hit in enumerate(lexical_hits):
+        doc_id = hit["_id"]
+        if doc_id not in doc_scores:
+            doc_scores[doc_id] = {"_source": hit["_source"], "_id": doc_id, "_score": 0}
+        doc_scores[doc_id]["_score"] += 1 / (k + rank + 1)
+
+    # Process Semantic (Vector) Results
+    for rank, hit in enumerate(semantic_hits):
+        doc_id = hit["_id"]
+        if doc_id not in doc_scores:
+            doc_scores[doc_id] = {"_source": hit["_source"], "_id": doc_id, "_score": 0}
+        doc_scores[doc_id]["_score"] += 1 / (k + rank + 1)
+
+    # Sort by final accumulated score
+    sorted_docs = sorted(doc_scores.values(), key=lambda x: x["_score"], reverse=True)
+    return sorted_docs
 
 
 @router.post("/search", response_model=SearchResponse)
@@ -87,6 +130,87 @@ async def search_papers(request: SearchRequest):
             }
 
             response = es.search(**search_params)
+        elif request.search_method == "hybrid":
+            # Hybrid search using Reciprocal Rank Fusion (RRF)
+            # Combines keyword (BM25) and semantic (kNN) results
+
+            # Build keyword query
+            keyword_query = {
+                "bool": {
+                    "must": [
+                        {
+                            "multi_match": {
+                                "query": request.query,
+                                "fields": ["title", "abstract"],
+                            }
+                        }
+                    ],
+                    "filter": [build_year_filter(request.year)] if request.year else [],
+                }
+            }
+
+            # Build kNN query
+            query_vector = model.encode(request.query).tolist()
+            knn_query = {
+                "field": "embedding",
+                "query_vector": query_vector,
+                "k": 50,
+                "num_candidates": 100,
+            }
+            year_filter = build_year_filter(request.year)
+            if year_filter:
+                knn_query["filter"] = year_filter
+
+            # Execute both queries
+            lexical_resp = es.search(
+                index=INDEX_NAME_HYBRID,
+                query=keyword_query,
+                size=50,
+                _source={"excludes": ["embedding"]},
+            )
+
+            semantic_resp = es.search(
+                index=INDEX_NAME_HYBRID,
+                knn=knn_query,
+                size=50,
+                _source={"excludes": ["embedding"]},
+            )
+
+            # Apply RRF to merge results
+            fused_results = reciprocal_rank_fusion(
+                lexical_resp["hits"]["hits"], semantic_resp["hits"]["hits"]
+            )
+
+            # Paginate fused results
+            paginated_hits = fused_results[skip : skip + size]
+            total_fused = len(fused_results)
+
+            # Format hybrid results
+            articles = []
+            for hit in paginated_hits:
+                source = hit["_source"]
+                # RRF scores are small (0.01-0.03 range), normalize for display
+                normalized_score = min(hit["_score"] * 30, 1.0)
+
+                articles.append(ArticleSnippet(
+                    id=source.get('cord_uid', ''),
+                    similarity_score=round(normalized_score, 2),
+                    title=source.get('title', ''),
+                    authors=source.get('authors', '').split('; ') if isinstance(source.get('authors'), str) else source.get('authors', []),
+                    journal=source.get('journal'),
+                    publication_date=source.get('publish_time'),
+                    abstract_snippet=truncate_abstract(source.get('abstract', ''))
+                ))
+
+            return SearchResponse(
+                pagination={
+                    'total_results': total_fused,
+                    'page': page,
+                    'total_pages': calculate_max_pages(total_fused, size),
+                    'size': size
+                },
+                results=articles
+            )
         else:
             # Regular search (keyword-based)
             query = {

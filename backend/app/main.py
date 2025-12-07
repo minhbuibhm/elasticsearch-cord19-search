@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.api import search, articles, bookmarks, recommendations
+from app.api import search, articles, bookmarks, recommendations, raw_text
 from app.auth import auth
 
 app = FastAPI(
@@ -24,6 +24,7 @@ app.include_router(search.router, prefix="/api", tags=["Search"])
 app.include_router(articles.router, prefix="/api/articles", tags=["Articles"])
 app.include_router(bookmarks.router, prefix="/api/bookmarks", tags=["Bookmarks"])
 app.include_router(recommendations.router, prefix="/api", tags=["Recommendations"])
+app.include_router(raw_text.router, prefix="/api", tags=["Raw Text"])
 
 @app.get("/")
 async def root():

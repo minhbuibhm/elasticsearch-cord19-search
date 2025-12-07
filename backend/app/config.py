@@ -1,4 +1,5 @@
 INDEX_NAME_DEFAULT = "cord19"
 INDEX_NAME_N_GRAM = "cord19_n_gram"
 INDEX_NAME_EMBEDDING = "cord19_embedding"
+INDEX_NAME_HYBRID = "cord19_hybrid_search"
 EMBEDDING_MODEL = "all-MiniLM-L6-v2"

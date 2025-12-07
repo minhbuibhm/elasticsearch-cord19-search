@@ -1,13 +1,13 @@
 from fastapi import APIRouter, HTTPException
 from typing import List
 
-from app.models import ArticleDetail, RelatedArticle, RelatedArticlesResponse
+from app.models import ArticleDetail, RelatedArticle, RelatedArticlesResponse, Reference
 from app.utils import get_es_client
 from app.elasticsearch_helpers import (
     get_document_by_cord_uid,
-    get_related_documents
+    get_related_documents_v2
 )
-from app.config import INDEX_NAME_DEFAULT
+from app.config import INDEX_NAME_HYBRID
 
 router = APIRouter()
 
@@ -26,18 +26,33 @@ async def get_article_detail(article_id: str):
     """
     try:
         es = get_es_client(max_retries=3, sleep_time=1)
-        
-        # Get document from Elasticsearch
-        paper = get_document_by_cord_uid(es, article_id, INDEX_NAME_DEFAULT)
-        
+
+        # Get document from hybrid index (has references field)
+        paper = get_document_by_cord_uid(es, article_id, INDEX_NAME_HYBRID)
+
         if not paper:
             raise HTTPException(status_code=404, detail="Article not found")
-        
+
         # Parse authors - handle both string and list formats
         authors = paper.get('authors', [])
         if isinstance(authors, str):
             authors = authors.split('; ') if authors else []
-        
+
+        # Parse references
+        raw_references = paper.get('references', [])
+        references = []
+        for ref in raw_references:
+            references.append(Reference(
+                ref_id=ref.get('ref_id'),
+                title=ref.get('title'),
+                year=ref.get('year'),
+                venue=ref.get('venue'),
+                authors=ref.get('authors'),
+                volume=ref.get('volume'),
+                pages=ref.get('pages'),
+                doi=ref.get('doi')
+            ))
+
         # Return detailed information
         return ArticleDetail(
             id=paper.get('cord_uid', ''),
@@ -48,7 +63,8 @@ async def get_article_detail(article_id: str):
             publication_date=paper.get('publish_time'),
             full_text_url=paper.get('url'),
             clinical_trials=[],  # Not available in current schema
-            doi=paper.get('doi')
+            doi=paper.get('doi'),
+            references=references
         )
     
     except HTTPException:
@@ -74,16 +90,16 @@ async def get_related_articles(article_id: str, limit: int = 5):
         es = get_es_client(max_retries=3, sleep_time=1)
         
         # First verify the source article exists
-        source_paper = get_document_by_cord_uid(es, article_id, INDEX_NAME_DEFAULT)
+        source_paper = get_document_by_cord_uid(es, article_id, INDEX_NAME_HYBRID)
         if not source_paper:
             raise HTTPException(status_code=404, detail="Article not found")
         
-        # Get related documents using MLT query
-        related_docs = get_related_documents(
-            es, 
-            article_id, 
+        # Get related documents using kNN (preferred) with MLT fallback
+        related_docs = get_related_documents_v2(
+            es,
+            article_id,
             max_results=limit,
-            index=INDEX_NAME_DEFAULT
+            index=INDEX_NAME_HYBRID
         )
         
         # Format response
