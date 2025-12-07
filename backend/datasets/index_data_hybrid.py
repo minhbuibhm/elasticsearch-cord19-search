@@ -47,7 +47,7 @@ VECTOR_DIMS = 384  # all-miniLM-L6-v2 outputs a vector with 384 dimensions.
 
 # Point this to the folder containing 'document_parses' and 'metadata.csv/json'
 # We will use this to resolve relative paths found in the metadata.
-INPUT_FILE = "../datasets/ready_for_indexing_enriched.json" # Output from Step 1
+INPUT_FILE = "ready_for_indexing_enriched.json" # Output from Step 1
 
 # Local imports utility
 try:
