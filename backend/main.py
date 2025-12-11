@@ -220,8 +220,8 @@ async def hybrid_search(
     knn_query = {
         "field": "embedding",
         "query_vector": query_vector,
-        "k": 50,
-        "num_candidates": 100,
+        "k": 100,
+        "num_candidates": 200,
     }
     year_filter = build_year_filter(year)
     if year_filter:

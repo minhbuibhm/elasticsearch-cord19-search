@@ -17,7 +17,7 @@ def get_es_client(max_retries: int = 5, sleep_time: int = 2) -> Elasticsearch:
                  "http://localhost:9200",
                  api_key=elastic_api_key
                 )
-            pprint("Connected to Elasticsearch!")
+            # pprint("Connected to Elasticsearch!")
             return es
         except Exception:
             pprint("Could not connect to Elasticsearch, retrying...")
